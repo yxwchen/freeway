@@ -1,0 +1,170 @@
+//banner
+.banner {
+    height: 500px;
+    background-image: url(https://images.unsplash.com/photo-1488330890490-c291ecf62571?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80);
+    background-position: center;
+    background-size: cover;
+}
+
+// 主導覽元件＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+.mainNavWrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+
+}
+
+.mainNav {
+    @include device-md {
+        display: none;
+    }
+
+    .mainNav-nav {
+        display: flex;
+
+        @include device-md {
+            flex-direction: column;
+            position: absolute;
+            width: 100vw;
+            background-color: $realWhite;
+            //    TODO:加入展開動畫
+            top: 0;
+            left: 0;
+            margin-top: 51px;
+            z-index: 999;
+        }
+
+        .mainNav-item {
+            padding: 0 0.5rem;
+        }
+    }
+
+    .mainNav-link {
+        color: $gray-600;
+        display: inline-block;
+        padding: 8px;
+
+        &:hover {
+            color: $primary;
+        }
+    }
+
+    .mainNav-link.active {
+        color: $primary;
+        font-weight: 500;
+    }
+}
+
+// 工具導覽＝＝＝＝＝＝＝＝＝＝
+.toolNav {
+    font-size: $font-size-sm;
+    text-align: end;
+    padding: 4px 0;
+
+    @include device-md {
+        display: none;
+        padding-right: 16px;
+        position: absolute;
+        background: $realWhite;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        margin-top: 251px;
+    }
+}
+
+// 漢堡選單
+.mainNavToggleBtn {
+    display: none;
+    cursor: pointer;
+
+    @include device-md {
+        display: block;
+    }
+}
+
+// tab＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+.tab {
+    display: flex;
+    border-bottom: 1px solid $gray-500;
+
+    @include device-sm {
+        flex-wrap: wrap;
+    }
+
+    .tab-item {
+
+
+        .tab-link {
+            color: $gray-600;
+            display: inline-block;
+            padding: 8px 20px;
+
+            &:hover {
+                color: $primary;
+            }
+        }
+
+        a.active {
+            color: $primary;
+            font-weight: 500;
+            border-bottom: 3px solid $primary;
+            padding: 8px 20px;
+            margin-bottom: -1px;
+        }
+
+
+    }
+
+}
+
+// 麵包屑元件======================
+.customBreadcrumb {
+    .breadcrumb {
+        align-items: center;
+
+        .breadcrumb-item {
+            color: $primary;
+        }
+
+        .breadcrumb-item+.breadcrumb-item::before {
+            float: left;
+            padding-right: var(--bs-breadcrumb-item-padding-x);
+            color: var(--bs-breadcrumb-divider-color);
+            content: var(--bs-breadcrumb-divider, ">");
+        }
+
+        .breadcrumb-item+.active {
+            color: $black;
+            font-size: $font-size-md;
+            font-weight: 600;
+        }
+    }
+}
+
+// 搜尋面板元件==============================
+.searchWrap {
+    background-color: $gray-100;
+    padding: 16px;
+}
+
+// footer元件＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+// 內容不夠 fotter需固定在下面，才需要在頁面新增 <footer>class="position-fixed bottom-0"; <main>標籤加入底部高度 mb-9
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $green-900;
+    color: $realWhite;
+    width: 100%;
+    padding: 8px 16px;
+    font-size: $font-size-sm;
+
+    @include device-sm {
+        padding: 4px 8px;
+        flex-direction: column;
+    }
+}

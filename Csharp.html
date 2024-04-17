@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>專案樣板</title>
+  <link rel="stylesheet" href="./assets/scss/all.css">
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+</head>
+
+<body>
+  <div class="container">
+    @model Freeway.Models.RoadKillViewModel.YearsModel
+    <div id="VuePage">
+        <div id="app">
+            <div class="aaa">
+                @* 麵包屑導覽 *@
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">景觀生態表單</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">綠地面積表</li>
+                    </ol>
+                </nav>
+            </div>
+            @* 搜尋面板 *@
+            <div id="QueryPanel" class="card">
+                <div class="card-header">
+                    道路致死
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="queryFormSearchtxta" class="col-form-label">物種名稱</label>
+                            <input type="text" id="queryFormSearchtxta" class="form-control" v-model="queryForm.Searchtxt">
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormClass1" class="col-form-label">局別</label>
+                            <select class="form-select" id="queryFormClass1" v-model="queryForm.Class1">
+                                <option value="0">高公局</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormClass2" class="col-form-label">工務段</label>
+                            <select class="form-select" id="queryFormClass2" v-model="queryForm.Class2">
+                                <option value="0">高公局</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormAnnoStatus" class="col-form-label">資料時間篩選</label>
+                            <select class="form-select">
+                                <option value="0">依年度</option>
+                                <option value="1">依季度</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormYear" class="col-form-label"></label>
+                            @*<select class="form-select" id="queryFormYear" v-model.number="queryForm.Year">
+                                <option value="0">年度</option>
+                                <option>2023</option>
+                            </select>*@
+                            @Html.DropDownListFor(m => m.select_year_show, Model.myList, "年度", new { @id = "queryFormYear", @v_model = "queryForm.Year" })
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormQuarter" class="col-form-label"></label>
+                            <select class="form-select" id="queryFormQuarter" v-model="queryForm.Quarter">
+                                <option value="0">季度</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="queryFormHighwayId" class="col-form-label">國道編號</label>
+                            <select class="form-select" id="queryFormHighwayId" v-model="queryForm.HighwayId">
+                                <option value="1">國道1號</option>
+                            </select>
+                            @*@Html.DropDownListFor(m => m.highway_name, Model.highwayIdList, new { @id = "queryFormHighwayId", @v_model = "queryForm.HighwayId" })*@
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormDirection" class="col-form-label">國道方向</label>
+                            <select class="form-select" id="queryFormDirection" v-model="queryForm.Direction">
+                                <option value="N">N</option>
+                                <option value="S">S</option>
+                                <option value="R">R</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormStart1" class="col-form-label">起始里程</label>
+                            <input type="text" id="queryFormStart1" class="form-control" v-model="queryForm.Start1">
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormAnnoStart2" class="col-form-label">＋公尺</label>
+                            <input type="text" id="queryFormStart2" class="form-control" v-model="queryForm.Start2">
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormEnd1" class="col-form-label">結束里程</label>
+                            <input type="text" id="queryFormEnd1" class="form-control" v-model="queryForm.End1">
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormEnd2" class="col-form-label">＋公尺</label>
+                            <input type="text" id="queryFormEnd2" class="form-control" v-model="queryForm.End2">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="queryFormSensitiveLevel" class="col-form-label">敏感里程等級</label>
+                            <select class="form-select" id="queryFormSensitiveLevel" v-model="queryForm.SensitiveLevel">
+                                <option value="0">ALL</option>
+                                <option>三</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormGroup" class="col-form-label">物種類群</label>
+                            <select class="form-select" id="queryFormGroup" v-model="queryForm.Group">
+                                <option value="0">ALL</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="queryFormSpeciesName" class="col-form-label">關注物種</label>
+                            <select class="form-select" id="queryFormSpeciesName" v-model="queryForm.SpeciesName">
+                                <option value="0">ALL</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header">
+                    <button type="button" class="btn btn-primary" v-on:click="CleanAll()">清空</button>&nbsp;
+                    <button type="button" class="btn btn-primary" v-on:click="Query()">查詢</button>&nbsp;
+                    <button type="button" class="btn btn-primary" v-on:click="OpenAddPanel()">新增</button>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>工務段</th>
+                                <th>國道編號</th>
+                                <th>方向</th>
+                                <th>國道里程</th>
+                                <th>日期</th>
+                                <th>工作類別</th>
+                                <th>可能種類</th>
+                                <th>詳細資料</th>
+                                <th style="width:30px;text-align:center;">管理</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, index) in grid.datas">
+                                <td>{{item.site_ch}}</td>
+                                <td>{{item.highway_id}}</td>
+                                <td>{{item.direction}}</td>
+                                <td>{{item.milestone}}</td>
+                                <td>{{item.date}}</td>
+                                <td>{{item.type}}</td>
+                                <td>{{item.species}}</td>
+                                <td></td>
+                                <td><a v-on:click="EditMode(index)" style="cursor:pointer;">編</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <vue-pagination v-bind:pagination="grid.pagination" v-on:requery="reQuery"></vue-pagination>
+                </div>
+            </div>
+    
+            <div id="AddPanel" class="card" style="display:none;">
+                <div class="card-header">
+                    新增道路致死
+                    <div style="float:right;">
+                        <button type="button" class="btn btn-secondary btn-sm" v-on:click="BackPage()">回前頁</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="addFormClass1" class="col-form-label">工務分局</label>
+                            <select class="form-select" id="addFormClass1" v-model="addForm.Class1">
+                                <option value="0">北</option>
+                                <option value="1">中</option>
+                                <option value="2">南</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormClass2" class="col-form-label">工務段</label>
+                            <select class="form-select" id="addFormClass2" v-model="addForm.Class2">
+                                <option value="0">高公局</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="addFormCollectorCh" class="col-form-label">調查人</label>
+                            <input type="text" id="addFormCollectorCh" class="form-control" v-model="addForm.CollectorCh">
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormCollectDate" class="col-form-label">調查日期</label>
+                            <input type="text" id="addFormCollectDate" class="form-control" v-model="addForm.CollectDate">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label class="col-form-label">調查地點</label>
+                        </div>
+                        <div class="col-auto">
+                            <select class="form-select" id="addFormHighwayId" v-model="addForm.HighwayId">
+                                <option value="1">國道1號</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormDirection" class="col-form-label">方向</label>
+                        </div>
+                        <div class="col-auto">
+                            <select class="form-select" id="addFormDirection" v-model="addForm.Direction">
+                                <option value="0">N</option>
+                                <option value="1">S</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormMilestone1" class="col-form-label">里程</label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="addFormMilestone1" class="form-control" v-model="addForm.Milestone1">
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormMilestone2" class="col-form-label">k＋</label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="addFormMilestone2" class="form-control" v-model="addForm.Milestone2">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="addFormY" class="col-form-label">經度</label>
+                            <input type="text" id="addFormY" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')" v-model="addForm.Y">
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormX" class="col-form-label">緯度</label>
+                            <input type="text" id="addFormX" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')" v-model="addForm.X">
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormRange" class="col-form-label">範圍</label>
+                            <input type="text" id="addFormRange" class="form-control" v-model="addForm.Range">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="addFormType" class="col-form-label">工作類別</label>
+                            <input type="text" id="addFormType" class="form-control" v-model="addForm.Type">
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormWeather" class="col-form-label">天氣</label>
+                            <input type="text" id="addFormWeather" class="form-control" v-model="addForm.Weather">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="addFormAnimal" class="col-form-label">大類</label>
+                            <input type="text" id="addFormAnimal" class="form-control" v-model="addForm.Animal">
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormAnimal2" class="col-form-label">動物類群</label>
+                            <input type="text" id="addFormAnimal2" class="form-control" v-model="addForm.Animal2">
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormDetailAnimal" class="col-form-label">詳細類群</label>
+                            <input type="text" id="addFormDetailAnimal" class="form-control" v-model="addForm.DetailAnimal">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="addFormSpecies" class="col-form-label">可能種類</label>
+                            <input type="text" id="addFormSpecies" class="form-control" v-model="addForm.Species">
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormDeduceSpecies" class="col-form-label">可能種類推測</label>
+                            <input type="text" id="addFormDeduceSpecies" class="form-control" v-model="addForm.DeduceSpecies">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="addFormTransfer" class="col-form-label">轉送</label>
+                            <input type="text" id="addFormTransfer" class="form-control" v-model="addForm.Transfer">
+                        </div>
+                        <div class="col-auto">
+                            <label for="addFormNote" class="col-form-label">備註</label>
+                            <input type="text" id="addFormNote" class="form-control" v-model="addForm.Note">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-auto">
+                            <label>註:</label>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" v-on:click="AddSave()">送出</button>
+                </div>
+            </div>
+    
+            <div id="EditPanel" class="card" style="display:none;">
+                <div class="card-header">
+                    修改道路致死
+                    <div style="float:right;">
+                        <button type="button" class="btn btn-secondary btn-sm" v-on:click="BackPage()">回前頁</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="editFormClass1" class="col-form-label">工務分局</label>
+                            <select class="form-select" id="editFormClass1" v-model="editForm.Class1">
+                                <option value="0">北</option>
+                                <option value="1">中</option>
+                                <option value="2">南</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormClass2" class="col-form-label">工務段</label>
+                            <select class="form-select" id="editFormClass2" v-model="editForm.Class2">
+                                <option value="0">高公局</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="editFormCollectorCh" class="col-form-label">調查人</label>
+                            <input type="text" id="editFormCollectorCh" class="form-control" v-model="editForm.CollectorCh">
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormCollectDate" class="col-form-label">調查日期</label>
+                            <input type="text" id="editFormCollectDate" class="form-control" v-model="editForm.CollectDate">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label class="col-form-label">調查地點</label>
+                        </div>
+                        <div class="col-auto">
+                            <select class="form-select" id="editFormHighwayId" v-model="editForm.HighwayId">
+                                <option value="1">國道1號</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormDirection" class="col-form-label">方向</label>
+                        </div>
+                        <div class="col-auto">
+                            <select class="form-select" id="editFormDirection" v-model="editForm.Direction">
+                                <option value="0">N</option>
+                                <option value="1">S</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormMilestone1" class="col-form-label">里程</label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="editFormMilestone1" class="form-control" v-model="editForm.Milestone1">
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormMilestone2" class="col-form-label">k＋</label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="editFormMilestone2" class="form-control" v-model="editForm.Milestone2">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="editFormY" class="col-form-label">經度</label>
+                            <input type="text" id="editFormY" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')" v-model="editForm.Y">
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormX" class="col-form-label">緯度</label>
+                            <input type="text" id="editFormX" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')" v-model="editForm.X">
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormRange" class="col-form-label">範圍</label>
+                            <input type="text" id="editFormRange" class="form-control" v-model="editForm.Range">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="editFormType" class="col-form-label">工作類別</label>
+                            <input type="text" id="editFormType" class="form-control" v-model="editForm.Type">
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormWeather" class="col-form-label">天氣</label>
+                            <input type="text" id="editFormWeather" class="form-control" v-model="editForm.Weather">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="editFormAnimal" class="col-form-label">大類</label>
+                            <input type="text" id="editFormAnimal" class="form-control" v-model="editForm.Animal">
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormAnimal2" class="col-form-label">動物類群</label>
+                            <input type="text" id="editFormAnimal2" class="form-control" v-model="editForm.Animal2">
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormDetailAnimal" class="col-form-label">詳細類群</label>
+                            <input type="text" id="editFormDetailAnimal" class="form-control" v-model="editForm.DetailAnimal">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="editFormSpecies" class="col-form-label">可能種類</label>
+                            <input type="text" id="editFormSpecies" class="form-control" v-model="editForm.Species">
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormDeduceSpecies" class="col-form-label">可能種類推測</label>
+                            <input type="text" id="editFormDeduceSpecies" class="form-control" v-model="editForm.DeduceSpecies">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="editFormTransfer" class="col-form-label">轉送</label>
+                            <input type="text" id="editFormTransfer" class="form-control" v-model="editForm.Transfer">
+                        </div>
+                        <div class="col-auto">
+                            <label for="editFormNote" class="col-form-label">備註</label>
+                            <input type="text" id="editFormNote" class="form-control" v-model="editForm.Note">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-auto">
+                            <label>註:</label>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" v-on:click="EditSave()">送出</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @section scripts {
+        <script>
+                var VuePage = new Vue({
+                    el: '#VuePage'
+                    , data: {
+                        queryForm: {
+                            Searchtxt: '',
+                            Class1: '0',
+                            Class2: '0',
+                            Year: '0',
+                            Quarter: '0',
+                            HighwayId: '0',
+                            Direction: '0',
+                            Start1: '',
+                            Start2: '',
+                            End1: '',
+                            End2: '',
+                            SensitiveLevel: '0',
+                            Group: '0',
+                            SpeciesName: '0'
+                        },
+                        addForm: {
+                            Class1: '0',
+                            Class2: '0',
+                            CollectorCh: '',
+                            CollectDate: '',
+                            HighwayId: '1',
+                            Direction: '0',
+                            Milestone1: '',
+                            Milestone2: '',
+                            Y: '',
+                            X: '',
+                            Range: '',
+                            Type: '',
+                            Weather: '',
+                            Animal: '',
+                            Animal2: '',
+                            DetailAnimal: '',
+                            Species: '',
+                            DeduceSpecies: '',
+                            Transfer: '',
+                            Note: ''
+                        },
+                        editForm: {
+                            Class1: '0',
+                            Class2: '0',
+                            CollectorCh: '',
+                            CollectDate: '',
+                            HighwayId: '1',
+                            Direction: '0',
+                            Milestone1: '',
+                            Milestone2: '',
+                            Y: '',
+                            X: '',
+                            Range: '',
+                            Type: '',
+                            Weather: '',
+                            Animal: '',
+                            Animal2: '',
+                            DetailAnimal: '',
+                            Species: '',
+                            DeduceSpecies: '',
+                            Transfer: '',
+                            Note: ''
+                        }
+                        , grid: {
+                            datas: [],
+                            pagination: {
+                                pages: [], pageNo: '1', pageSize: '10', totalCount: ''
+                            }
+                        }
+                    }
+                    , methods: {
+                        Query(reQuery) {
+                            var self = this;
+    
+                            if (reQuery !== 'reQuery') {
+                                self.grid.pagination.pageNo = 1;
+                            }
+    
+                            // 組合表單資料
+                            var postData = {};
+                            postData['Searchtxt'] = self.queryForm.Searchtxt;
+                            postData['Class1'] = self.queryForm.Class1;
+                            postData['Class2'] = self.queryForm.Class2;
+                            postData['Year'] = self.queryForm.Year;
+                            postData['Quarter'] = self.queryForm.Quarter;
+                            postData['HighwayId'] = self.queryForm.HighwayId;
+                            postData['Direction'] = self.queryForm.Direction;
+                            postData['Start1'] = self.queryForm.Start1;
+                            postData['Start2'] = self.queryForm.Start2;
+                            postData['End1'] = self.queryForm.End1;
+                            postData['End2'] = self.queryForm.End2;
+                            postData['SensitiveLevel'] = self.queryForm.SensitiveLevel;
+                            postData['Title'] = self.queryForm.Title;
+                            postData['SpeciesName'] = self.queryForm.SpeciesName;
+    
+                            //加分頁
+                            postData['pagination'] = JSON.parse(JSON.stringify(self.grid.pagination));
+    
+                            $.blockUI();
+                            // 使用 jQuery Ajax 傳送至後端
+                            $.ajax({
+                                url: '@Url.Content("~/LandscapeEcology/RoadKillQuery")',
+                                method: 'POST',
+                                dataType: 'json',
+                                data: { inModel: postData },
+                                success: function (datas) {
+                                    $.unblockUI();
+                                    if (datas.ErrMsg) {
+                                        alert(datas.ErrMsg);
+                                        return;
+                                    }
+                                    // 綁定列表
+                                    self.grid.datas = datas.Grid;
+                                    self.grid.pagination = datas.pagination;
+                                },
+                                error: function (err) {
+                                    $.unblockUI();
+                                    alert(err.status + " " + err.statusText + '\n' + err.responseText);
+                                }
+                            });
+                        },
+                        reQuery(emitData) {
+                            var self = this;
+    
+                            if (emitData !== undefined) {
+                                self.grid.pagination = emitData.pagination;
+                            }
+    
+                            self.Query('reQuery');
+                        },
+                        OpenAddPanel() {
+                            $('#QueryPanel').hide();
+                            $('#AddPanel').show();
+                        },
+                        BackPage() {
+                            $('#QueryPanel').show();
+                            $('#AddPanel').hide();
+                        },
+                        AddSave() {
+                            var self = this;
+    
+                            var postData = {};
+                            postData['Class1'] = self.addForm.Class1;
+                            postData['Class2'] = self.addForm.Class2;
+                            postData['CollectorCh'] = self.addForm.CollectorCh;
+                            postData['CollectDate'] = self.addForm.CollectDate;
+                            postData['HighwayId'] = self.addForm.HighwayId;
+                            postData['Direction'] = self.addForm.Direction;
+                            postData['Milestone1'] = self.addForm.Milestone1;
+                            postData['Milestone2'] = self.addForm.Milestone2;
+                            postData['Y'] = self.addForm.Y;
+                            postData['X'] = self.addForm.X;
+                            postData['Range'] = self.addForm.Range;
+                            postData['Type'] = self.addForm.Type;
+                            postData['Weather'] = self.addForm.Weather;
+                            postData['Animal'] = self.addForm.Animal;
+                            postData['Animal2'] = self.addForm.Animal2;
+                            postData['DetailAnimal'] = self.addForm.DetailAnimal;
+                            postData['Species'] = self.addForm.Species;
+                            postData['DeduceSpecies'] = self.addForm.DeduceSpecies;
+                            postData['Transfer'] = self.addForm.Transfer;
+                            postData['Note'] = self.addForm.Note;
+                            postData['Mode'] = "0";
+    
+                            $.blockUI();
+                            $.ajax({
+                                url: '@Url.Content("~/LandscapeEcology/RoadKillSave")',
+                                method: 'POST',
+                                dataType: 'json',
+                                data: { inModel: postData, __RequestVerificationToken: $('@Html.AntiForgeryToken()').val() },
+                                success: function (datas) {
+                                    $.unblockUI();
+    
+                                    if (datas.ErrMsg) {
+                                        alert(datas.ErrMsg);
+                                        return;
+                                    }
+    
+                                    alert(datas.ResultMsg);
+                                    self.BackPage();
+                                    self.Query();
+                                },
+                                error: function (err) {
+                                    $.unblockUI();
+                                    alert(err.status + " " + err.statusText + '\n' + err.responseText);
+                                }
+                            });
+                        },
+                        EditMode(index) {
+                            var self = this;
+    
+                            //self.editForm.Class1 = '';//self.grid.datas[index].Class1;
+                            //self.editForm.Class2 = '';//self.grid.datas[index].Class2;
+                            //self.editForm.CollectorCh = '';//self.grid.datas[index].CollectorCh;
+                            //self.editForm.CollectDate = '';//self.grid.datas[index].CollectDate;
+                            //self.editForm.HighwayId = '';//self.grid.datas[index].HighwayId;
+                            //self.editForm.Direction = '';//self.grid.datas[index].Direction;
+                            //self.editForm.Milestone1 = '';//self.grid.datas[index].Milestone1;
+                            //self.editForm.Milestone2 = '';//self.grid.datas[index].Milestone2;
+                            //self.editForm.Y = '';//self.grid.datas[index].Y;
+                            //self.editForm.X = '';//self.grid.datas[index].X;
+                            //self.editForm.Range = '';//self.grid.datas[index].Range;
+                            //self.editForm.Type = '';//self.grid.datas[index].Type;
+                            //self.editForm.Weather = '';//self.grid.datas[index].Weather;
+                            //self.editForm.Animal = '';//self.grid.datas[index].Animal;
+                            //self.editForm.Animal2 = '';//self.grid.datas[index].Animal2;
+                            //self.editForm.DetailAnimal = '';//self.grid.datas[index].DetailAnimal;
+                            //self.editForm.Species = '';//self.grid.datas[index].Species;
+                            //self.editForm.DeduceSpecies = '';//self.grid.datas[index].DeduceSpecies;
+                            //self.editForm.Transfer = '';//self.grid.datas[index].Transfer;
+                            //self.editForm.Note = '';//self.grid.datas[index].Note;
+    
+                            $('#QueryPanel').hide();
+                            $('#EditPanel').show();
+                        },
+                        EditSave() {
+                            var self = this;
+    
+                            var postData = {};
+                            postData['Class1'] = self.editForm.Class1;
+                            postData['Class2'] = self.editForm.Class2;
+                            postData['CollectorCh'] = self.editForm.CollectorCh;
+                            postData['CollectDate'] = self.editForm.CollectDate;
+                            postData['HighwayId'] = self.editForm.HighwayId;
+                            postData['Direction'] = self.editForm.Direction;
+                            postData['Milestone1'] = self.editForm.Milestone1;
+                            postData['Milestone2'] = self.editForm.Milestone2;
+                            postData['Y'] = self.editForm.Y;
+                            postData['X'] = self.editForm.X;
+                            postData['Range'] = self.editForm.Range;
+                            postData['Type'] = self.editForm.Type;
+                            postData['Weather'] = self.editForm.Weather;
+                            postData['Animal'] = self.editForm.Animal;
+                            postData['Animal2'] = self.editForm.Animal2;
+                            postData['DetailAnimal'] = self.editForm.DetailAnimal;
+                            postData['Species'] = self.editForm.Species;
+                            postData['DeduceSpecies'] = self.editForm.DeduceSpecies;
+                            postData['Transfer'] = self.editForm.Transfer;
+                            postData['Note'] = self.editForm.Note;
+                            postData['Mode'] = "1";
+    
+                            $.blockUI();
+                            $.ajax({
+                                url: '@Url.Content("~/LandscapeEcology/RoadKillSave")',
+                                method: 'POST',
+                                dataType: 'json',
+                                data: { inModel: postData, __RequestVerificationToken: $('@Html.AntiForgeryToken()').val() },
+                                success: function (datas) {
+                                    $.unblockUI();
+    
+                                    if (datas.ErrMsg) {
+                                        alert(datas.ErrMsg);
+                                        return;
+                                    }
+    
+                                    alert(datas.ResultMsg);
+                                    self.BackPage();
+                                    self.Query();
+                                },
+                                error: function (err) {
+                                    $.unblockUI();
+                                    alert(err.status + " " + err.statusText + '\n' + err.responseText);
+                                }
+                            });
+                        }
+                    }
+                });
+    
+                //app.component('vue-pagination', VuePagination);
+                //const vm = app.mount('#app');
+    
+                $(function () {
+                      $('#addFormCollectDate').datepicker({
+                            autoclose: true,
+                            format: "yyyy/mm/dd"
+                      });
+    
+                      $('#addFormCollectDate').datepicker().on("blur", function (e) {
+                            vm.$data.addForm.CollectDate = $(this).val();
+                      });
+    
+                      $('#addFormCollectDate').datepicker().on("change", function (e) {
+                            vm.$data.addForm.CollectDate = $(this).val();
+                      });
+    
+                      $('#addFormHighwayId').on("change", function (e) {
+                            var postData = {};
+                            postData['HighwayId'] = self.addForm.HighwayId;
+    
+                            $.ajax({
+                                  url: '@Url.Content("~/LandscapeEcology/RoadKillGetXY")',
+                                  method: 'POST',
+                                  dataType: 'json',
+                                  data: { inModel: postData },
+                                  success: function (datas) {
+                                        $.unblockUI();
+    
+                                        if (datas.ErrMsg) {
+                                              alert(datas.ErrMsg);
+                                              return;
+                                        }
+    
+                                  },
+                                  error: function (err) {
+                                        $.unblockUI();
+                                        alert(err.status + " " + err.statusText + '\n' + err.responseText);
+                                  }
+                            });
+                      });
+    
+                      $('#editFormCollectDate').datepicker({
+                            autoclose: true,
+                            format: "yyyy/mm/dd"
+                      });
+    
+                      $('#editFormCollectDate').datepicker().on("blur", function (e) {
+                            vm.$data.editForm.CollectDate = $(this).val();
+                      });
+    
+                      $('#editFormCollectDate').datepicker().on("change", function (e) {
+                            vm.$data.editForm.CollectDate = $(this).val();
+                      });
+                })
+        </script>
+    }
+  </div>
+  <!-- bs js -->
+  <script src="./assets/js/"></script>
+  <script src="./assets/js/bootstrap.min.js"></script>
+</body>
+
+</html>

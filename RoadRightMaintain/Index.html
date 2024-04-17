@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國道景觀管理系統</title>
+    <!-- css -->
+    <link rel="stylesheet" href="../assets/scss/all.css">
+    <!-- ico -->
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon.ico" />
+    <!-- <link rel="stylesheet" href="../assets/font-awesome-4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+    <div id="app" class="position-relative">
+        <!-- 主導覽 -->
+        <div class="mainNavWrap shadowSM bg-light">
+            <h1><a href="#"><img src="../assets/images/freewayLogo.svg" alt="國道景觀管理系統"></a></h1>
+            <nav class="mainNav">
+                <ul class="mainNav-nav">
+                    <li class="mainNav-item"><a href="" class="mainNav-link">圖資平台</a></li>
+                    <li class="mainNav-item"><a href="" class="mainNav-link">查詢與統計</a></li>
+                    <li class="mainNav-item"><a href="./index.html" class="mainNav-link active">資料填報</a></li>
+                    <li class="mainNav-item"><a href="" class="mainNav-link">專案填報</a></li>
+                    <li class="mainNav-item"><a href="" class="mainNav-link">系統管理</a></li>
+                </ul>
+            </nav>
+            <div>
+                <div class="toolNav">
+                    <p class="d-none"><a href="">系統使用手冊</a></p>
+                    <ul>
+                        <li><span class="d-inline pe-1">內湖</span>工務段</li>
+                        <li><span class="d-inline pe-1">你好</span><a href="#">管理者</a></li>
+                        <li><a href="#">登出</a></li>
+                    </ul>
+                </div>
+                <div class="mainNavToggleBtn">
+                    <i class="fa-solid fa-bars fa-xl"></i>
+                </div>
+            </div>
+
+        </div>
+        <!--/.主導覽 -->
+        <!-- 主要區塊 -->
+        <main class="mb-9">
+            <div class="container pt-md-7">
+                <!-- tab元件 -->
+                <ul class="tab">
+                    <li class="tab-item">
+                        <a class="tab-link" aria-current="page" href="../LandscapeEcology/index.html">景觀生態表單</a>
+                    </li>
+                    <li class="tab-item">
+                        <a class="tab-link active" href="./index.html">路權維護表單</a>
+                    </li>
+                    <li class="tab-item">
+                        <a class="tab-link" href="#">民眾陳情案件</a>
+                    </li>
+                    <li class="tab-item">
+                        <a class="tab-link" href="#">一般勞務</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="container pt-md-4">
+                <!-- /.tab元件 -->
+                <div>
+                    <div class="row row-cols-2 row-cols-lg-4 g-3 g-lg-5">
+                        <div class="col">
+                            <a href="./RoadKill.html" class="cardLink position-relative">
+                                <div>
+                                    <p>路權出租與無償使用</p>
+                                    <div class="position-absolute bottom10 end10">
+                                        <i class="fa-solid fa-road fa-2x text-lightBlue"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="" class="cardLink position-relative">
+                                <div>
+                                    <p>移交接管資料</p>
+                                    <div class="position-absolute bottom10 end10">
+                                        <i class="fa-solid fa-mountain fa-2x text-lightBlue"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- /.主要區塊 -->
+        <!-- footer -->
+        <footer class="footer position-fixed bottom-0">
+            <div class="d-flex align-items-center flex-row-reverse flex-md-row flex-lg-row flex-xl-row">
+                <img src="../assets/images/sLogo.png" style="width: 70px;height: 35px;" alt="small logo">
+                <ul class="ps-2">
+                    <li><i class="fa-solid fa-phone"></i>：(02)2909-6141</li>
+                    <li><i class="fa-solid fa-house"></i>：24303新北市泰山區黎明里半山雅70號</li>
+                </ul>
+            </div>
+            <div class="text-md-end">
+                <p>交通部高速公路局 Copyright © All Rights Reserved. </p>
+                <p>建議瀏覽器：Google Chrome、Edge</p>
+            </div>
+        </footer>
+        <!-- /.footer -->
+    </div>
+    <script src="../assets/js/all.js"></script>
+</body>
+
+</html>
